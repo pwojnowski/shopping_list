@@ -35,8 +35,8 @@ class Product {
 
   Product(this.name);
 
-  void buy() {
-    bought = true;
+  void buy(bool buy) {
+    bought = buy;
     print('Bought $name');
   }
 
@@ -46,10 +46,16 @@ class Product {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Product> _itemsToBuy = [Product("Orzeszki")];
+  final List<Product> _itemsToBuy = [
+    Product("Orzeszki"),
+    Product("Woda"),
+  ];
 
   void _addItems() {
-    print("Not implemented yet!");
+    print('Adding new product.');
+    setState(() {
+      _itemsToBuy.add(Product("New product"));
+    });
   }
 
   @override
@@ -59,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: buildColumnContent(),
+        child: _buildListContent(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addItems,
@@ -69,42 +75,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildColumnContent() {
+  Widget _buildListContent() {
     if (_itemsToBuy.isEmpty) {
       return const Text('Add items to the list!');
     }
-    return ListView(
+    return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
-      children: renderProducts(),
+      itemCount: _itemsToBuy.length,
+      itemBuilder: (ctx, idx) => _renderProduct(_itemsToBuy[idx]),
     );
   }
 
-  List<Widget> renderProducts() {
-    return _itemsToBuy.map((product) => renderProduct(product)).toList();
-  }
-
-  Widget renderProduct(Product product) {
-    return ListTile(
+  Widget _renderProduct(Product product) {
+    return CheckboxListTile(
       key: ValueKey(product.name),
       title: Text(product.name),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       tileColor: Colors.lightGreen,
+      value: product.bought,
+      onChanged: (value) => setState(() {
+        print("checkbox value: $value");
+        product.buy(value ?? false);
+      }),
       //leading: const Icon(Icons.circle, size: 10),
-      trailing: createProductButtons(product),
-    );
-  }
-
-  Widget createProductButtons(Product product) {
-    return SizedBox(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton.icon(
-              onPressed: () => {product.buy()},
-              icon: const Icon(Icons.shopping_basket_outlined),
-              label: const Text(""))
-        ],
-      ),
     );
   }
 }
