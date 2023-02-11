@@ -12,7 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shopping List',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightGreen,
+        listTileTheme: const ListTileThemeData(
+          tileColor: Colors.orangeAccent,
+          textColor: Colors.black,
+          iconColor: Colors.white,
+        ),
       ),
       home: const MyHomePage(title: 'Shopping List'),
     );
@@ -92,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
       key: ValueKey(product.name),
       title: Text(product.name),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      tileColor: Colors.lightGreen,
       value: product.bought,
       onChanged: (value) => setState(() {
         print("checkbox value: $value");
