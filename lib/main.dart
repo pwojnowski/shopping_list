@@ -67,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _buildListContent(),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: _addItems,
         tooltip: 'Add',
