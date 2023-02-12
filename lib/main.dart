@@ -85,10 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_itemsToBuy.isEmpty) {
       return const Text('Add items to the list!');
     }
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
       itemCount: _itemsToBuy.length,
       itemBuilder: (ctx, idx) => _renderProduct(_itemsToBuy[idx]),
+      separatorBuilder: (ctx, idx) => const Divider(),
     );
   }
 
