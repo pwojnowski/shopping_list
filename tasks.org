@@ -1,0 +1,10 @@
+* DONE Find out how to create a list of items
+CLOSED: [2023-02-12 Sun 11:10]
+:LOGBOOK:
+CLOCK: [2023-02-11 Sat 09:21]--[2023-02-12 Sun 11:10] => 25:49
+:END:
+* DONE Remove deleted item from the list
+CLOSED: [2023-02-12 Sun 11:10]
+* DONE Add a button to mark an item as completed
+CLOSED: [2023-02-12 Sun 11:10]
+* TODO Move completed items to the bottom of the list
