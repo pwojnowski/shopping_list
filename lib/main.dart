@@ -36,17 +36,12 @@ class MyHomePage extends StatefulWidget {
 class Product {
   String name;
   bool bought = false;
-  bool deleted = false;
 
   Product(this.name);
 
   void buy(bool buy) {
     bought = buy;
     print('Bought $name');
-  }
-
-  void delete() {
-    deleted = true;
   }
 }
 
@@ -88,22 +83,46 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
       itemCount: _itemsToBuy.length,
-      itemBuilder: (ctx, idx) => _renderProduct(_itemsToBuy[idx]),
+      itemBuilder: (ctx, idx) => _renderProduct(_itemsToBuy[idx], idx),
       separatorBuilder: (ctx, idx) => const Divider(),
     );
   }
 
-  Widget _renderProduct(Product product) {
+  Widget _renderProduct(Product product, int index) {
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        setState(() {
+          _itemsToBuy.removeAt(index);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${product.name} removed!"),
+          ),
+        );
+      },
+      child: _buildTail(product),
+    );
+  }
+
+  Widget _buildTail(Product product) {
     return CheckboxListTile(
       key: ValueKey(product.name),
       title: Text(product.name),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       value: product.bought,
+      tileColor: _getTailColor(product),
       onChanged: (value) => setState(() {
         print("checkbox value: $value");
         product.buy(value ?? false);
       }),
-      //leading: const Icon(Icons.circle, size: 10),
     );
+  }
+
+  Color? _getTailColor(Product product) {
+    if (product.bought) {
+      return Colors.grey;
+    }
+    return Theme.of(context).listTileTheme.tileColor;
   }
 }
